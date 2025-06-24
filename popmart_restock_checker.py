@@ -1,22 +1,17 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 
 PRODUCT_URL = "https://www.popmart.com/pl/products/527/THE-MONSTERS---Exciting-Macaron-Vinyl-Face-Blind-Box"
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1387113098023800852/PU-X9wuGkBlb5oMBkIKP9_s2LNI10ZSTn0JnBwCKu7yJgiZ-YF8a1BQxnY4yt2QZBVAs"
 
-# Frazy do wykrycia restocku lub dostępności
+# Słowa kluczowe oznaczające restock lub dostępność
 KEYWORDS = [
     "in stock",
     "available",
     "restock",
     "add to cart",
-    "再入荷",           # japońskie 'restock'
+    "再入荷",
     "dodaj do koszyka",
-    "w sprzedaży",
-    "dostępny",
-    "już wkrótce",
-    "niedostępny",
-    "coming soon",
 ]
 
 def check_restock():
@@ -25,9 +20,9 @@ def check_restock():
         response.raise_for_status()
         soup = BeautifulSoup(response.text, "html.parser")
         text = soup.get_text(separator=" ").lower()
+
         for keyword in KEYWORDS:
-            if keyword.lower() in text:
-                print(f"[INFO] Wykryto frazę: {keyword}")
+            if keyword in text:
                 return True
         return False
     except Exception as e:
@@ -35,18 +30,22 @@ def check_restock():
         return False
 
 def send_discord_notification(message):
+    webhook_url = os.getenv("DISCORD_WEBHOOK_URL")
+    if not webhook_url:
+        print("[BŁĄD] Brak webhooka Discord w zmiennych środowiskowych!")
+        return
     try:
-        r = requests.post(DISCORD_WEBHOOK_URL, json={"content": message}, timeout=10)
-        r.raise_for_status()
-        print("[INFO] Wysłano powiadomienie na Discord.")
+        resp = requests.post(webhook_url, json={"content": message}, timeout=10)
+        resp.raise_for_status()
+        print("[INFO] Powiadomienie wysłane na Discord.")
     except Exception as e:
-        print(f"[BŁĄD] Nie udało się wysłać powiadomienia: {e}")
+        print(f"[BŁĄD] Nie udało się wysłać webhooka: {e}")
 
 def main():
     if check_restock():
-        send_discord_notification(f"🔔 RESTOCK lub informacja o dostępności na stronie:\n{PRODUCT_URL}")
+        send_discord_notification(f"🔔 RESTOCK wykryty! {PRODUCT_URL}")
     else:
-        print("[INFO] Restock niedostępny - nic do wysłania.")
+        print("[INFO] Brak restocku - nic do wysłania.")
 
 if __name__ == "__main__":
     main()
