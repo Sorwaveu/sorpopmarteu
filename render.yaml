@@ -1,0 +1,9 @@
+services:
+  - type: cron
+    name: popmart-restock-cron
+    runtime: python
+    repo: https://github.com/Sorwaveu/sorpopmarteu
+    branch: main
+    buildCommand: ""
+    startCommand: "python popmart_restock_checker.py"
+    schedule: "*/5 * * * *"  # co 5 minut
