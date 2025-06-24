@@ -17,7 +17,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 # === KONFIGURACJA ===
 PRODUCT_URL = "https://www.popmart.com/pl/products/527/THE-MONSTERS---Exciting-Macaron-Vinyl-Face-Blind-Box"
-DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/your_webhook_here"
+DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1387113098023800852/PU-X9wuGkBlb5oMBkIKP9_s2LNI10ZSTn0JnBwCKu7yJgiZ-YF8a1BQxnY4yt2QZBVAs"
 KEYWORDS = [
     "in stock",
     "available",
