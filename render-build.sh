@@ -7,4 +7,4 @@ npm install -g npm@latest
 pip install -r requirements.txt
 
 # Instalacja przeglądarek dla Playwright (wraz z zależnościami systemowymi)
-playwright install --with-deps
+PLAYWRIGHT_BROWSERS_PATH=0 playwright install
