@@ -12,6 +12,8 @@ KEYWORDS = [
     "add to cart",
     "再入荷",
     "dodaj do koszyka",
+    "add to cart",
+    "buy now",
 ]
 
 def check_restock():
